@@ -1,4 +1,5 @@
 var path = require('path');
+var os = require('os');
 var strftime = require('strftime');
 var re = RegExp(
     '\\\\[adehHjlnrstT@AuvVwW!#$\\\\[\\]]|\\\\[0-7]{3}'
@@ -28,6 +29,9 @@ module.exports = function (str, opts) {
         if (x === 'w') return process.cwd();
         if (x === 'W') return path.basename(process.cwd());
         if (x === 'd') return strftime('%a %b %d', opts.now);
+        if (x === 'h') return os.hostname().split('.')[0];
+        if (x === 'H') return os.hostname();
+        
         if (m = /^D{([^}]*)}/.exec(x)) {
             return strftime(m[1], opts.now);
         }
