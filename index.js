@@ -24,8 +24,8 @@ module.exports = function (str, opts) {
             m = /^\\D{([^}]*)}/.exec(s);
             return strftime(m[1], opts.now);
         }
-        if (x === 'h') return os.hostname().split('.')[0];
-        if (x === 'H') return os.hostname();
+        if (x === 'h') return (opts.hostname || os.hostname()).split('.')[0];
+        if (x === 'H') return (opts.hostname || os.hostname());
         if (x === 'j') return opts.jobs || 0; // number of jobs
         if (x === 'l') return opts.tty || -1; // basename `tty`
         if (x === 'n') return '\n';
