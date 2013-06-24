@@ -1,0 +1,33 @@
+{
+    "name": "decode-prompt",
+    "version": "0.0.0",
+    "description": "parse bash $PS1 escape characters",
+    "main": "index.js",
+    "dependencies": {
+        "strftime": "~0.6.1"
+    },
+    "devDependencies": {
+        "tape": "~1.0.4"
+    },
+    "scripts": {
+        "test": "tap test/*.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/substack/decode-prompt.git"
+    },
+    "homepage": "https://github.com/substack/decode-prompt",
+    "keywords": [
+        "bash",
+        "PS1",
+        "escape",
+        "shell",
+        "env"
+    ],
+    "author": {
+        "name": "James Halliday",
+        "email": "mail@substack.net",
+        "url": "http://substack.net"
+    },
+    "license": "MIT"
+}
