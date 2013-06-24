@@ -3,6 +3,10 @@
 parse bash 
 [$PS1 escape characters](https://www.gnu.org/software/bash/manual/bash.html#Printing-a-Prompt)
 
+[![browser support](https://ci.testling.com/substack/decode-prompt.png)](http://ci.testling.com/substack/decode-prompt)
+
+[![build status](https://secure.travis-ci.org/substack/decode-prompt.png)](http://travis-ci.org/substack/decode-prompt)
+
 # example
 
 ``` js
