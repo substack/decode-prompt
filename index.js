@@ -15,34 +15,71 @@ module.exports = function (str, opts) {
     
     function replacer (s) {
         var m;
+        
+        var x = s.charAt(1);
+        if (x === 'a') return '\x07';
+        if (x === 'e') return '\x1b';
+        if (x === 'd') return strftime('%a %b %d', opts.now);
+        if (x === 'D') {
+            m = /^\\D{([^}]*)}/.exec(s);
+            return strftime(m[1], opts.now);
+        }
+        if (x === 'h') return os.hostname().split('.')[0];
+        if (x === 'H') return os.hostname();
+        if (x === 'j') return opts.jobs || 0; // number of jobs
+        if (x === 'l') return opts.tty || -1; // basename `tty`
+        if (x === 'n') return '\n';
+        if (x === 'r') return '\r';
+        if (x === 's') return path.basename(opts.shell || opts.env.SHELL);
+        if (x === 't') return strftime('%T', opts.now);
+        if (x === 'T') return strftime('%I:%M:%S', opts.now);
+        if (x === '@') return strftime('%r', opts.now);
+        if (x === 'A') return strftime('%H:%M', opts.now);
+        if (x === 'u') return opts.user || opts.env.USER;
+        if (x === 'v') {
+            return (opts.version || '0.0.0').replace(/^(\d+\.\d+).*/, '$1');
+        }
+        if (x === 'V') return opts.version || '0.0.0';
+        if (x === 'w') {
+            var dir = opts.cwd || opts.env.CWD || process.cwd();
+            var home = opts.env.HOME + '/';
+            if (dir + '/' === home) return '~';
+            if (dir.slice(0, home.length) === home) {
+                dir = '~/' + dir.slice(home.length);
+            }
+            var dirtrim = parseInt(opts.dirtrim || opts.env.PROMPT_DIRTRIM, 10);
+            if (!(dirtrim > 0)) return dir;
+            var parts = dir.split('/');
+            if (parts.length < dirtrim) return dir;
+            return (/^~/.test(dir) ? '~/' : '')
+                + '...' + parts.slice(- dirtrim)
+            ;
+        }
+        if (x === 'W') {
+            var dir = opts.cwd || opts.env.CWD || process.cwd();
+            if (dir === opts.env.HOME) return '~';
+            return path.basename(dir);
+        }
+        if (x === '!') return opts.history === undefined ? 0 : opts.history;
+        if (x === '#') return opts.command === undefined ? 0 : opts.command;
+        if (x === '$') {
+            var uid = opts.uid || opts.env.UID || process.getuid();
+            return uid === 0 ? '#' : '$';
+        }
+        
         if (m = /^\${([^}]+)}/.exec(s)) {
             return opts.env[m[1]] || '';
         }
-        else if (m = /^\$(\w+)/.exec(s)) {
-            return opts.env[m[1]];
+        if (m = /^\$(\w+)/.exec(s)) {
+            return opts.env[m[1]] || '';
         }
         
-        var x = s.slice(1);
-        if (/^[0-7]{1,3}$/.test(x)) {
-            return String.fromCharCode(parseInt(x, 8));
-        }
-        if (x === 'w') return process.cwd();
-        if (x === 'W') return path.basename(process.cwd());
-        if (x === 'd') return strftime('%a %b %d', opts.now);
-        if (x === 'h') return os.hostname().split('.')[0];
-        if (x === 'H') return os.hostname();
+        if (x === '[') return '';
+        if (x === ']') return '';
         
-        if (m = /^D{([^}]*)}/.exec(x)) {
-            return strftime(m[1], opts.now);
+        if (/^\\[0-7]{1,3}$/.test(s)) {
+            return String.fromCharCode(parseInt(s.slice(1), 8));
         }
-        
-        var rep = {
-            a: '\x07',
-            e: '\x1b',
-            u: opts.user || opts.env.USER,
-            '[': '',
-            ']': ''
-        }[x];
-        return rep === undefined ? x : rep;
+        return x;
     }
 };
