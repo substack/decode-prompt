@@ -3,8 +3,8 @@ var decode = require('../');
 var strftime = require('strftime');
 
 test('time codes', function (t) {
-    var t0 = new Date(1370000000000); // fri may 31 2013 04:33:20
-    var t1 = new Date(1371000000000); // tue june 11 2013 18:20:00
+    var t0 = new Date("Fri May 31 2013 04:33:20");
+    var t1 = new Date("Tue June 11 2013 18:20:00");
     
     t.equal(decode('\\d'), strftime('%a %b %d'), "now o'clock");
     t.equal(decode('\\d', { now: t0 }), 'Fri May 31');
