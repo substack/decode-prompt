@@ -41,7 +41,7 @@ module.exports = function (str, opts) {
         }
         if (x === 'V') return opts.version || '0.0.0';
         if (x === 'w') {
-            var dir = opts.cwd || opts.env.CWD || process.cwd();
+            var dir = opts.cwd || opts.env.PWD || process.cwd();
             var home = opts.env.HOME + '/';
             if (dir + '/' === home) return '~';
             if (dir.slice(0, home.length) === home) {
@@ -50,13 +50,13 @@ module.exports = function (str, opts) {
             var dirtrim = parseInt(opts.dirtrim || opts.env.PROMPT_DIRTRIM, 10);
             if (!(dirtrim > 0)) return dir;
             var parts = dir.split('/');
-            if (parts.length < dirtrim) return dir;
+            if (parts.length <= dirtrim + 1) return dir;
             return (/^~/.test(dir) ? '~/' : '')
-                + '...' + parts.slice(- dirtrim)
+                + '.../' + parts.slice(- dirtrim).join('/')
             ;
         }
         if (x === 'W') {
-            var dir = opts.cwd || opts.env.CWD || process.cwd();
+            var dir = opts.cwd || opts.env.PWD || process.cwd();
             if (dir === opts.env.HOME) return '~';
             return path.basename(dir);
         }
