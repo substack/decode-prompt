@@ -17,6 +17,14 @@ test('time codes', function (t) {
     t.equal(decode('\\d', { now: t1 }), 'Tue Jun 11');
     t.equal(decode('\\D{%T}', { now: t0 }), '04:33:20');
     t.equal(decode('\\D{%T <-> %Y}', { now: t1 }), '18:20:00 <-> 2013');
+    t.equal(decode('\\t', { now: t0 }), '04:33:20');
+    t.equal(decode('\\t', { now: t1 }), '18:20:00');
+    t.equal(decode('\\T', { now: t0 }), '04:33:20');
+    t.equal(decode('\\T', { now: t1 }), '06:20:00');
+    t.equal(decode('\\@', { now: t0 }), '04:33:20 AM');
+    t.equal(decode('\\@', { now: t1 }), '06:20:00 PM');
+    t.equal(decode('\\A', { now: t0 }), '04:33');
+    t.equal(decode('\\A', { now: t1 }), '18:20');
     
     t.end();
 });
