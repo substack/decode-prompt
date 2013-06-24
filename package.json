@@ -3,6 +3,7 @@
     "version": "0.0.0",
     "description": "parse bash $PS1 escape characters",
     "main": "index.js",
+    "browser": { "os": "./lib/os.js" },
     "dependencies": {
         "strftime": "~0.6.1"
     },
