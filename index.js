@@ -58,7 +58,7 @@ module.exports = function (str, opts) {
         if (x === 'W') {
             var dir = opts.cwd || opts.env.PWD || process.cwd();
             if (dir === opts.env.HOME) return '~';
-            return path.basename(dir);
+            return path.basename(dir) || '/';
         }
         if (x === '!') return opts.history === undefined ? 0 : opts.history;
         if (x === '#') return opts.command === undefined ? 0 : opts.command;
